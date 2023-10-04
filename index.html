@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChekNum</title>
+    <style>
+        #output {
+            width: 400px;
+            height: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Првоерка номеров</h1>
+
+    <input type="file" id="fileInput" accept=".xlsx">
+    <button onclick="handleFile()">Загрузить файл</button>
+
+    <button onclick="downloadFile()">Скачать файл ответ</button>
+
+    <div id="output"></div>
+    <script>
+        let fileData = null;
+
+        function handleFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                fileData = e.target.result;
+                displayOutput('Файл загружен: ' + file.name);
+            };
+            reader.onerror = function (e) {
+                displayOutput('Ошибка при чтении файла.');
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadFile() {
+            if (fileData) {
+                const dataBlob = new Blob([fileData], {type: 'application/xlsx'});
+
+                const url = window.URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'ответ.xlsx';
+                link.click();
+
+                displayOutput('Файл ответа скачивается.');
+            } else {
+                displayOutput('Нет данных для скачивания.');
+            }
+        }
+
+        function displayOutput(text) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerText = text;
+        }
+    </script>
+</body>
+</html>
