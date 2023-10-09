@@ -8,6 +8,11 @@ numbers_data = pd.read_excel('numbers.xlsx')
 
 # Создание пустого списка для хранения сопоставленных данных
 mapped_data = []
+error_data = []
+
+non_number = 0
+complit_number = 0
+empty_string = 0
 
 # Итерация по каждому номеру из файла numbers.xlsx
 
@@ -16,6 +21,7 @@ for number in numbers_data['Numbers']:
     x = str(number)
     if (len(x)) == 11:
 
+        complit_number += 1
         kod_operatora = x[1:4]
         nomer =  x[4:11]    
         # Поиск соответствующего диапазона значений "От" и "До"
@@ -30,12 +36,23 @@ for number in numbers_data['Numbers']:
         
         # Добавление сопоставленных данных в список
             mapped_data.append([number, operator, region])
+    elif match.empty:
+        empty_string += 1
+
     else:
-        print("Ошибочка")
+        non_number += 1
+        error_data.append([number])
+        
 
-
+print("Установленных номеров:", complit_number)
+print("Неустановленных номеров:", non_number)
+print("Пустых строк:", empty_string)
 # Создание DataFrame для сопоставленных данных
-mapped_df = pd.DataFrame(mapped_data, columns=['Номер', 'Оператор сотовой связи', 'Регион'])
 
-# Сохранение DataFrame в новый файл output.xlsx
+mapped_df = pd.DataFrame(mapped_data, columns=['Номер', 'Оператор сотовой связи', 'Регион'])
+error_data_df = pd.DataFrame(error_data, columns=['Номер'])
+
+# Сохранение DataFrame в новый файл output.xlsxto_excel
+
 mapped_df.to_excel('output.xlsx', index=False)
+error_data_df.to_excel('ErrorNum.xlsx', index=False)
