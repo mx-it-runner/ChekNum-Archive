@@ -47,12 +47,18 @@ for number in numbers_data['Numbers']:
 print("Установленных номеров:", complit_number)
 print("Неустановленных номеров:", non_number)
 print("Пустых строк:", empty_string)
-# Создание DataFrame для сопоставленных данных
 
+
+if os.path.exists('output.xlsx'):
+    os.remove('output.xlsx')
+
+if os.path.exists('ErrorNum.xlsx'):
+    os.remove('ErrorNum.xlsx')
+
+# Создание DataFrame для сопоставленных данных
 mapped_df = pd.DataFrame(mapped_data, columns=['Номер', 'Оператор сотовой связи', 'Регион'])
 error_data_df = pd.DataFrame(error_data, columns=['Номер'])
 
 # Сохранение DataFrame в новый файл output.xlsxto_excel
-
 mapped_df.to_excel('output.xlsx', index=False)
 error_data_df.to_excel('ErrorNum.xlsx', index=False)
