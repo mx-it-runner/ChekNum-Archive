@@ -1,7 +1,6 @@
 import pandas as pd
 import sys
 import os
-#import numpy as np
 
 # Чтение данных из файлов DEF-9xx.xlsx и numbers.xlsx
 def_data = pd.read_excel('Data.xlsx')
@@ -13,41 +12,41 @@ error_data = []
 
 non_number = 0
 complit_number = 0
-empty_string = 0
+# empty_string = 0
 
 # Итерация по каждому номеру из файла numbers.xlsx
-
 for number in numbers_data['Numbers']:
     # Получение кода оператора (АБС) и номера для диапазона
     x = str(number)
-    if (len(x)) == 11:
-
-        complit_number += 1
-        kod_operatora = x[1:4]
-        nomer =  x[4:11]    
-        # Поиск соответствующего диапазона значений "От" и "До"
     
+    if (len(x) == 11):
+
+        kod_operatora = x[1:4]
+        nomer = x[4:11]
+
+        # Поиск соответствующего диапазона значений "От" и "До"
         match = def_data[(def_data['АВС/ DEF'] == int(kod_operatora)) & (def_data['От'] <= int(nomer)) & (def_data['До'] >= int(nomer))]    
     
         # Проверка, найдено ли совпадение
         if not match.empty:
             # Получение значений оператора и региона для найденного диапазона
+            complit_number += 1
             operator = match['Оператор'].iloc[0]
             region = match['Регион'].iloc[0]
         
             # Добавление сопоставленных данных в список
             mapped_data.append([number, operator, region])
-    elif match.empty:
-        empty_string += 1
-
+        else:
+            non_number += 1
+            error_data.append([number])
+    
     else:
         non_number += 1
         error_data.append([number])
-        
 
 print("Установленных номеров:", complit_number)
 print("Неустановленных номеров:", non_number)
-print("Пустых строк:", empty_string)
+# print("Пустых строк:", empty_string)
 
 
 if os.path.exists('output.xlsx'):
