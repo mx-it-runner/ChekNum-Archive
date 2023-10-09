@@ -1,5 +1,6 @@
 import pandas as pd
 import sys
+import os
 #import numpy as np
 
 # Чтение данных из файлов DEF-9xx.xlsx и numbers.xlsx
@@ -30,11 +31,11 @@ for number in numbers_data['Numbers']:
     
         # Проверка, найдено ли совпадение
         if not match.empty:
-        # Получение значений оператора и региона для найденного диапазона
+            # Получение значений оператора и региона для найденного диапазона
             operator = match['Оператор'].iloc[0]
             region = match['Регион'].iloc[0]
         
-        # Добавление сопоставленных данных в список
+            # Добавление сопоставленных данных в список
             mapped_data.append([number, operator, region])
     elif match.empty:
         empty_string += 1
@@ -47,12 +48,18 @@ for number in numbers_data['Numbers']:
 print("Установленных номеров:", complit_number)
 print("Неустановленных номеров:", non_number)
 print("Пустых строк:", empty_string)
-# Создание DataFrame для сопоставленных данных
 
+
+if os.path.exists('output.xlsx'):
+    os.remove('output.xlsx')
+
+if os.path.exists('ErrorNum.xlsx'):
+    os.remove('ErrorNum.xlsx')
+
+# Создание DataFrame для сопоставленных данных
 mapped_df = pd.DataFrame(mapped_data, columns=['Номер', 'Оператор сотовой связи', 'Регион'])
 error_data_df = pd.DataFrame(error_data, columns=['Номер'])
 
 # Сохранение DataFrame в новый файл output.xlsxto_excel
-
 mapped_df.to_excel('output.xlsx', index=False)
 error_data_df.to_excel('ErrorNum.xlsx', index=False)
