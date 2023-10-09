@@ -1,5 +1,6 @@
 import pandas as pd
 import sys
+import os
 #import numpy as np
 
 # Чтение данных из файлов DEF-9xx.xlsx и numbers.xlsx
@@ -30,11 +31,11 @@ for number in numbers_data['Numbers']:
     
         # Проверка, найдено ли совпадение
         if not match.empty:
-        # Получение значений оператора и региона для найденного диапазона
+            # Получение значений оператора и региона для найденного диапазона
             operator = match['Оператор'].iloc[0]
             region = match['Регион'].iloc[0]
         
-        # Добавление сопоставленных данных в список
+            # Добавление сопоставленных данных в список
             mapped_data.append([number, operator, region])
     elif match.empty:
         empty_string += 1
