@@ -1,6 +1,10 @@
 import pandas as pd
 import sys
 import os
+<<<<<<< HEAD
+=======
+#import numpy as np
+>>>>>>> origin/main
 
 # Чтение данных из файлов DEF-9xx.xlsx и numbers.xlsx
 def_data = pd.read_excel('Data.xlsx')
@@ -30,8 +34,11 @@ for number in numbers_data['Numbers']:
         # Проверка, найдено ли совпадение
         if not match.empty:
             # Получение значений оператора и региона для найденного диапазона
+<<<<<<< HEAD
             complit_number += 1
 
+=======
+>>>>>>> origin/main
             operator = match['Оператор'].iloc[0]
             region = match['Регион'].iloc[0]
         
@@ -47,7 +54,11 @@ for number in numbers_data['Numbers']:
 
 print("Установленных номеров:", complit_number)
 print("Неустановленных номеров:", non_number)
+<<<<<<< HEAD
 # print("Пустых строк:", empty_string)
+=======
+print("Пустых строк:", empty_string)
+>>>>>>> origin/main
 
 
 if os.path.exists('output.xlsx'):
