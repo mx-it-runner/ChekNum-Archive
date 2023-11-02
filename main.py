@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 #import numpy as np
+import os
 
 # Чтение данных из файлов DEF-9xx.xlsx и numbers.xlsx
 def_data = pd.read_excel('Data.xlsx')
@@ -21,20 +22,20 @@ for number in numbers_data['Numbers']:
     x = str(number)
     if (len(x)) == 11:
 
-        complit_number += 1
         kod_operatora = x[1:4]
-        nomer =  x[4:11]    
+        nomer =  x[4:11]
         # Поиск соответствующего диапазона значений "От" и "До"
     
         match = def_data[(def_data['АВС/ DEF'] == int(kod_operatora)) & (def_data['От'] <= int(nomer)) & (def_data['До'] >= int(nomer))]    
     
         # Проверка, найдено ли совпадение
         if not match.empty:
-        # Получение значений оператора и региона для найденного диапазона
+            complit_number += 1
+            # Получение значений оператора и региона для найденного диапазона
             operator = match['Оператор'].iloc[0]
             region = match['Регион'].iloc[0]
         
-        # Добавление сопоставленных данных в список
+            # Добавление сопоставленных данных в список
             mapped_data.append([number, operator, region])
     elif match.empty:
         empty_string += 1
